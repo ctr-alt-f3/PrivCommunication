@@ -8,7 +8,7 @@
 #include <string.h>
 #include <sys/socket.h>
 #include <unistd.h>
-#define PORT 2137
+#define PORT 2138
 int main() {
   int socketfp = socket(AF_INET, SOCK_STREAM, 0);
   if (socketfp == -1) {
@@ -16,17 +16,23 @@ int main() {
   };
   // socket initialisation
   struct hostent *server = gethostbyname("localhost");
-  struct sockaddr_in addr_struct;
-  addr_struct.sin_family = AF_INET;
-  addr_struct.sin_port =
-      PORT; ////////////////////////////////////////////////////////////////////////////////////////
-  bcopy((char *)server->h_addr, (char *)&addr_struct.sin_addr.s_addr,
+  struct sockaddr_in *addr_struct = malloc(sizeof(struct sockaddr_in));
+  addr_struct->sin_family = AF_INET;
+  addr_struct->sin_port = htons(
+      PORT); ////////////////////////////////////////////////////////////////////////////////////////
+  bcopy((char *)server->h_addr, (char *)&(addr_struct->sin_addr.s_addr),
         server->h_length);
+  struct sockaddr adr;
   // sockaddr_in initialisation
-  if (!!connect(socketfp, &addr_struct, sizeof(socketfp))) {
+  if (connect(socketfp, (struct sockaddr *)addr_struct,
+              sizeof(struct sockaddr_in)) == -1) {
     perror("connection failed\n");
+  } else {
+    printf("connected successfully\n");
   }
 
+  printf("program ended\n");
+  free(addr_struct);
   /*
     TODO:
     -basic i/o via network without encryption

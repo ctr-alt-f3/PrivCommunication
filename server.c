@@ -7,7 +7,7 @@
 #include <string.h>
 #include <sys/socket.h>
 #include <unistd.h>
-#define PORT 2137
+#define PORT 2138
 int main() {
   int socketfp = socket(AF_INET, SOCK_STREAM, 0);
   if (socketfp == -1) {
@@ -23,15 +23,23 @@ int main() {
     printf("binding to port %d failed\n", PORT);
     // binded socket
   }
+  listen(socketfp, 5);
+  socklen_t size = sizeof(socket_address_in);
+  int connectedsock =
+      accept(socketfp, (struct sockaddr *)&socket_address_in, &size);
+
+  if (connectedsock == -1) {
+    perror("connecting failed\n");
+  } else {
+    printf("connected successfully");
+  }
+  /* TODO :
+    -getting data (using all supported ports)
+    -decrypting data
+
+
+
+
+
+  */
 }
-/* TODO :
-  -getting data (using all supported ports)
-  -decrypting data
-
-
-
-
-
-
-
-*/
