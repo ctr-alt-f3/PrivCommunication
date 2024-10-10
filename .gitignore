@@ -51,7 +51,7 @@ dkms.conf
 .Trash-*
 
 .nfs*
-
+.gdb_history
 [._]*.s[a-v][a-z]
 #!*.svg  # comment out if you don't need vector files
 [._]*.sw[a-p]
