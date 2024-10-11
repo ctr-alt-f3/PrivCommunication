@@ -45,7 +45,7 @@ loop:
   switch (action) {
   case 0:
     scanf("%s", data_out);
-    send(socketfp, data_out, 600, 0);
+    write(socketfp, data_out, 600);
     printf("data in:\n %s\n", (char *)data_in);
     break;
   case 1:

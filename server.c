@@ -38,7 +38,7 @@ int main() {
   }
   void *buff_out = malloc(600);
   void *buff_in = malloc(600);
-  strcpy(buff_out, "test message\n\0");
+  strcpy(buff_out, "IGOOOOOOOOOOOOOR_BRYYYYYYYYYYYS\n\0");
   send(connectedsock, buff_out, 600, 0);
   /*  int id = fork();
     if (id == 0) {*/
@@ -49,15 +49,15 @@ loop:
   scanf("%d", &action);
   switch (action) {
   case 0:
-    printf("data to transmit:\n");
+    //    printf("data to transmit:\n");
     scanf("%s", buff_out);
-    send(connectedsock, buff_out, 600, 0);
+    write(connectedsock, buff_out, 600);
     break;
   /*//}
   if (id != 0) {*/
   // getting messages
   case 1:
-    recv(connectedsock, buff_in, 600, 0);
+    read(connectedsock, buff_in, 600);
     printf("%s\n", buff_in);
     break;
   case 2:
