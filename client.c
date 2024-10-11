@@ -8,7 +8,7 @@
 #include <string.h>
 #include <sys/socket.h>
 #include <unistd.h>
-#define PORT 2138
+#define PORT 2137
 int main() {
   int socketfp = socket(AF_INET, SOCK_STREAM, 0);
   if (socketfp == -1) {
@@ -30,11 +30,26 @@ int main() {
   } else {
     printf("connected successfully\n");
   }
-  void *data = malloc(512);
-  recv(socketfp, data, 512, 0);
-  printf("%s", (char *)data);
+  void *data_out = malloc(600);
+  void *data_in = malloc(600);
+  recv(socketfp, data_in, 512, 0);
+  printf("%s", (char *)data_in);
+  int id = fork();
+  if (id == 0) {
+    // sending data
+    scanf("%s", data_out);
+    send(socketfp, data_out, 600, 0);
+    printf("data in:\n %s", (char *)data_in);
+  }
+  if (id != 0) {
+    // getting data from server
+    read(socketfp, data_in, 600);
+    printf("%s\n", data_in);
+  }
+  // ending program
   close(socketfp);
-  free(data);
+  free(data_in);
+  free(data_out);
   free(addr_struct);
   /*
     TODO:

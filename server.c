@@ -7,7 +7,7 @@
 #include <string.h>
 #include <sys/socket.h>
 #include <unistd.h>
-#define PORT 2138
+#define PORT 2137
 int main() {
   int socketfp = socket(AF_INET, SOCK_STREAM, 0);
   if (socketfp == -1) {
@@ -36,10 +36,26 @@ int main() {
   } else {
     printf("connected successfully");
   }
-  void *buff = malloc(600);
-  strcpy(buff, "igor brys to generalnie fajny człowiek jest\n\0");
-  send(connectedsock, buff, 600, 0);
-  free(buff);
+  void *buff_out = malloc(600);
+  void *buff_in = malloc(600);
+  strcpy(buff_out, "test message\n\0");
+  send(connectedsock, buff_out, 600, 0);
+  int id = fork();
+  if (id == 0) {
+    // sending messages
+    scanf("%s", buff_out);
+    send(connectedsock, buff_out, 600, 0);
+    printf("input:\n %s", (char *)buff_in);
+  }
+  if (id != 0) {
+    // getting messages
+    recv(connectedsock, buff_in, 600, 0);
+    printf("%s", buff_in);
+  }
+  free(buff_out);
+  free(buff_in);
+  close(connectedsock);
+  close(socketfp);
   /* TODO :
     -getting data (using all supported ports)
     -decrypting data
