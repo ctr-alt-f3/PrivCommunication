@@ -7,7 +7,7 @@
 #include <string.h>
 #include <sys/socket.h>
 #include <unistd.h>
-#define PORT 2137
+#define PORT 2147
 int main() {
   int socketfp = socket(AF_INET, SOCK_STREAM, 0);
   if (socketfp == -1) {
@@ -40,18 +40,31 @@ int main() {
   void *buff_in = malloc(600);
   strcpy(buff_out, "test message\n\0");
   send(connectedsock, buff_out, 600, 0);
-  int id = fork();
-  if (id == 0) {
-    // sending messages
+  /*  int id = fork();
+    if (id == 0) {*/
+  // sending messages
+  int action = 3;
+loop:
+  printf("0-send 1-read 2-exit\n");
+  scanf("%d,&action");
+  switch (action) {
+  case 0:
     scanf("%s", buff_out);
     send(connectedsock, buff_out, 600, 0);
-    printf("input:\n %s", (char *)buff_in);
-  }
-  if (id != 0) {
-    // getting messages
+    break;
+  /*//}
+  if (id != 0) {*/
+  // getting messages
+  case 1:
     recv(connectedsock, buff_in, 600, 0);
     printf("%s", buff_in);
+    break;
+  case 2:
+    goto end;
+    //}
   }
+  goto loop;
+end:
   free(buff_out);
   free(buff_in);
   close(connectedsock);
