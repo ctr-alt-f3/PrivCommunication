@@ -46,9 +46,10 @@ int main() {
   int action = 3;
 loop:
   printf("0-send 1-read 2-exit\n");
-  scanf("%d,&action");
+  scanf("%d", &action);
   switch (action) {
   case 0:
+    printf("data to transmit:\n");
     scanf("%s", buff_out);
     send(connectedsock, buff_out, 600, 0);
     break;
@@ -67,6 +68,8 @@ loop:
 end:
   free(buff_out);
   free(buff_in);
+  shutdown(connectedsock, SHUT_RDWR);
+  shutdown(socketfp, SHUT_RDWR);
   close(connectedsock);
   close(socketfp);
   /* TODO :
