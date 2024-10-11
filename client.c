@@ -30,8 +30,11 @@ int main() {
   } else {
     printf("connected successfully\n");
   }
-
-  printf("program ended\n");
+  void *data = malloc(512);
+  recv(socketfp, data, 512, 0);
+  printf("%s", (char *)data);
+  close(socketfp);
+  free(data);
   free(addr_struct);
   /*
     TODO:
