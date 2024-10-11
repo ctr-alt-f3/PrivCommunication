@@ -34,7 +34,7 @@ int main() {
     perror("connecting failed\n");
     return -1;
   } else {
-    printf("connected successfully");
+    printf("connected successfully\n");
   }
   void *buff_out = malloc(600);
   void *buff_in = malloc(600);
@@ -46,9 +46,10 @@ int main() {
   int action = 3;
 loop:
   printf("0-send 1-read 2-exit\n");
-  scanf("%d,&action");
+  scanf("%d", &action);
   switch (action) {
   case 0:
+    printf("data to transmit:\n");
     scanf("%s", buff_out);
     send(connectedsock, buff_out, 600, 0);
     break;
@@ -57,7 +58,7 @@ loop:
   // getting messages
   case 1:
     recv(connectedsock, buff_in, 600, 0);
-    printf("%s", buff_in);
+    printf("%s\n", buff_in);
     break;
   case 2:
     goto end;
@@ -67,6 +68,8 @@ loop:
 end:
   free(buff_out);
   free(buff_in);
+  shutdown(connectedsock, SHUT_RDWR);
+  shutdown(socketfp, SHUT_RDWR);
   close(connectedsock);
   close(socketfp);
   /* TODO :
