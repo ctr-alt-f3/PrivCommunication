@@ -46,7 +46,7 @@ loop:
   case 0:
     scanf("%s", data_out);
     send(socketfp, data_out, 600, 0);
-    printf("data in:\n %s", (char *)data_in);
+    printf("data in:\n %s\n", (char *)data_in);
     break;
   case 1:
     //}

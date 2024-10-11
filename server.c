@@ -34,7 +34,7 @@ int main() {
     perror("connecting failed\n");
     return -1;
   } else {
-    printf("connected successfully");
+    printf("connected successfully\n");
   }
   void *buff_out = malloc(600);
   void *buff_in = malloc(600);
@@ -58,7 +58,7 @@ loop:
   // getting messages
   case 1:
     recv(connectedsock, buff_in, 600, 0);
-    printf("%s", buff_in);
+    printf("%s\n", buff_in);
     break;
   case 2:
     goto end;
