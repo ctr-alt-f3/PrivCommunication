@@ -30,13 +30,13 @@ int main() {
   } else {
     printf("connected successfully\n");
   }
-  void *data_out = malloc(600);
-  void *data_in = malloc(600);
+  char *data_out = malloc(600);
+  char *data_in = malloc(600);
   recv(socketfp, data_in, 512, 0);
   printf("%s", (char *)data_in);
   // int id = fork();
   int action = 3;
-  printf("0-send 1-read 3-exit\n");
+  printf("0-send 1-read 2-exit\n");
 loop:
   scanf("%d", &action);
 
@@ -45,19 +45,25 @@ loop:
   switch (action) {
   case 0:
     scanf("%s", data_out);
-    write(socketfp, data_out, 600);
+    if (write(socketfp, data_out, 600) == -1) {
+      perror("writing failed");
+    }
     // printf("data in:\n %s\n", (char *)data_in);
     break;
   case 1:
     //}
     // if (id != 0) {
     // getting data from server
-    read(socketfp, data_in, 600);
+    if (read(socketfp, data_in, 600) == -1) {
+      perror("reading failed\n");
+    }
     printf("%s\n", data_in);
     break;
   //}
   case 2:
     goto end;
+  default:
+    printf("unknown instruction\n");
   }
   goto loop;
   // ending program

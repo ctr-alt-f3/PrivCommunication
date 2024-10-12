@@ -36,8 +36,8 @@ int main() {
   } else {
     printf("connected successfully\n");
   }
-  void *buff_out = malloc(600);
-  void *buff_in = malloc(600);
+  char *buff_out = malloc(600);
+  char *buff_in = malloc(600);
   strcpy(buff_out, "IGOOOOOOOOOOOOOR_BRYYYYYYYYYYYS\n\0");
   send(connectedsock, buff_out, 600, 0);
   /*  int id = fork();
