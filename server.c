@@ -53,8 +53,6 @@ int main() {
   strcpy(data_out, "IGOOOOOOOOOOOOOR_BRYYYYYYYYYYYS\n\0");
   encrypt(data_out, PASSWD);
   send(connectedsock, data_out, BUFFSIZE, 0);
-  /*  int id = fork();
-    if (id == 0) {*/
   // sending messages
   int action = 3;
 loop:
@@ -62,13 +60,10 @@ loop:
   scanf("%d", &action);
   switch (action) {
   case 0:
-    //    printf("data to transmit:\n");
     scanf("%s", data_out);
     encrypt(data_out, PASSWD);
     write(connectedsock, data_out, BUFFSIZE);
     break;
-  /*//}
-  if (id != 0) {*/
   // getting messages
   case 1:
     read(connectedsock, data_in, BUFFSIZE);
@@ -77,7 +72,6 @@ loop:
     break;
   case 2:
     goto end;
-    //}
   }
   goto loop;
 end:
