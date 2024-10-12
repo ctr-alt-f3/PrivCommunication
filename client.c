@@ -9,13 +9,15 @@
 #include <sys/socket.h>
 #include <unistd.h>
 #define PORT 2147
+#define BUFFSIZE 600
+#define SERVER_IP "localhost"
 int main() {
   int socketfp = socket(AF_INET, SOCK_STREAM, 0);
   if (socketfp == -1) {
     perror("socket initialisation failed\n");
   };
   // socket initialisation
-  struct hostent *server = gethostbyname("localhost");
+  struct hostent *server = gethostbyname(SERVER_IP);
   struct sockaddr_in *addr_struct = malloc(sizeof(struct sockaddr_in));
   addr_struct->sin_family = AF_INET;
   addr_struct->sin_port = htons(
@@ -30,9 +32,9 @@ int main() {
   } else {
     printf("connected successfully\n");
   }
-  char *data_out = malloc(600);
-  char *data_in = malloc(600);
-  recv(socketfp, data_in, 512, 0);
+  char *data_out = malloc(BUFFSIZE);
+  char *data_in = malloc(BUFFSIZE);
+  recv(socketfp, data_in, BUFFSIZE, 0);
   printf("%s", (char *)data_in);
   // int id = fork();
   int action = 3;
@@ -45,7 +47,7 @@ loop:
   switch (action) {
   case 0:
     scanf("%s", data_out);
-    if (write(socketfp, data_out, 600) == -1) {
+    if (write(socketfp, data_out, BUFFSIZE) == -1) {
       perror("writing failed");
     }
     // printf("data in:\n %s\n", (char *)data_in);
@@ -54,7 +56,7 @@ loop:
     //}
     // if (id != 0) {
     // getting data from server
-    if (read(socketfp, data_in, 600) == -1) {
+    if (read(socketfp, data_in, BUFFSIZE) == -1) {
       perror("reading failed\n");
     }
     printf("%s\n", data_in);
@@ -74,7 +76,7 @@ end:
   free(addr_struct);
   /*
     TODO:
-    -basic i/o via network without encryption
+    -basic i/o via network without encryption - done
     -adding encryption
     -spoofing as http requests
     -adding other methods

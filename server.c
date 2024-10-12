@@ -8,6 +8,8 @@
 #include <sys/socket.h>
 #include <unistd.h>
 #define PORT 2147
+#define BUFFSIZE 600
+#define ACCEPTED_IPS INADDR_ANY
 int main() {
   int socketfp = socket(AF_INET, SOCK_STREAM, 0);
   if (socketfp == -1) {
@@ -16,7 +18,7 @@ int main() {
   };
   // initialised socket
   struct sockaddr_in socket_address_in;
-  socket_address_in.sin_addr.s_addr = INADDR_ANY;
+  socket_address_in.sin_addr.s_addr = ACCEPTED_IPS;
   socket_address_in.sin_port = htons(PORT);
   socket_address_in.sin_family = AF_INET;
   socklen_t len = sizeof(socket_address_in);
@@ -36,10 +38,10 @@ int main() {
   } else {
     printf("connected successfully\n");
   }
-  char *buff_out = malloc(600);
-  char *buff_in = malloc(600);
-  strcpy(buff_out, "IGOOOOOOOOOOOOOR_BRYYYYYYYYYYYS\n\0");
-  send(connectedsock, buff_out, 600, 0);
+  char *data_out = malloc(BUFFSIZE);
+  char *data_in = malloc(BUFFSIZE);
+  strcpy(data_out, "IGOOOOOOOOOOOOOR_BRYYYYYYYYYYYS\n\0");
+  send(connectedsock, data_out, BUFFSIZE, 0);
   /*  int id = fork();
     if (id == 0) {*/
   // sending messages
@@ -50,15 +52,15 @@ loop:
   switch (action) {
   case 0:
     //    printf("data to transmit:\n");
-    scanf("%s", buff_out);
-    write(connectedsock, buff_out, 600);
+    scanf("%s", data_out);
+    write(connectedsock, data_out, BUFFSIZE);
     break;
   /*//}
   if (id != 0) {*/
   // getting messages
   case 1:
-    read(connectedsock, buff_in, 600);
-    printf("%s\n", buff_in);
+    read(connectedsock, data_in, BUFFSIZE);
+    printf("%s\n", data_in);
     break;
   case 2:
     goto end;
@@ -66,8 +68,8 @@ loop:
   }
   goto loop;
 end:
-  free(buff_out);
-  free(buff_in);
+  free(data_out);
+  free(data_in);
   shutdown(connectedsock, SHUT_RDWR);
   shutdown(socketfp, SHUT_RDWR);
   close(connectedsock);
