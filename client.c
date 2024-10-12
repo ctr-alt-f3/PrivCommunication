@@ -11,6 +11,8 @@
 #define PORT 2147
 #define BUFFSIZE 600
 #define SERVER_IP "localhost"
+#define PASSWD "password"
+void encrypt(char *string, char *password);
 int main() {
   int socketfp = socket(AF_INET, SOCK_STREAM, 0);
   if (socketfp == -1) {
@@ -35,6 +37,7 @@ int main() {
   char *data_out = malloc(BUFFSIZE);
   char *data_in = malloc(BUFFSIZE);
   recv(socketfp, data_in, BUFFSIZE, 0);
+  encrypt(data_in, PASSWD);
   printf("%s", (char *)data_in);
   // int id = fork();
   int action = 3;
@@ -47,6 +50,7 @@ loop:
   switch (action) {
   case 0:
     scanf("%s", data_out);
+    encrypt(data_out, PASSWD);
     if (write(socketfp, data_out, BUFFSIZE) == -1) {
       perror("writing failed");
     }
@@ -59,6 +63,7 @@ loop:
     if (read(socketfp, data_in, BUFFSIZE) == -1) {
       perror("reading failed\n");
     }
+    encrypt(data_in, PASSWD);
     printf("%s\n", data_in);
     break;
   //}
@@ -84,4 +89,12 @@ end:
     -finishing
     -add peers
   */
+}
+void encrypt(char *string, char *password) {
+  int i = 0;
+  int j = 0;
+  for (i = 0; string[i] != '\0'; i++) {
+    string[i] = string[i] ^ password[j];
+    j = (j + 1) % strlen(password);
+  }
 }
