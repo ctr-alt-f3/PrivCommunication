@@ -34,8 +34,15 @@ int main() {
   } else {
     printf("connected successfully\n");
   }
-  char *data_out = malloc(BUFFSIZE);
+  char *data_out;
+  data_out = malloc(BUFFSIZE);
+  if (data_out == -1) {
+    perror("malloc failed\n");
+  }
   char *data_in = malloc(BUFFSIZE);
+  if (data_in == -1) {
+    perror("malloc failed\n");
+  }
   recv(socketfp, data_in, BUFFSIZE, 0);
   encrypt(data_in, PASSWD);
   printf("%s", (char *)data_in);

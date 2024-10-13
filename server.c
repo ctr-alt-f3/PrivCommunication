@@ -48,8 +48,16 @@ int main() {
   } else {
     printf("connected successfully\n");
   }
-  char *data_out = malloc(BUFFSIZE);
-  char *data_in = malloc(BUFFSIZE);
+  char *data_out;
+  data_out = malloc(BUFFSIZE);
+  if (data_out == -1) {
+    perror("malloc failed\n");
+  }
+  char *data_in;
+  data_in = malloc(BUFFSIZE);
+  if (data_in == -1) {
+    perror("malloc failed\n");
+  }
   strcpy(data_out, "IGOOOOOOOOOOOOOR_BRYYYYYYYYYYYS\n\0");
   encrypt(data_out, PASSWD);
   send(connectedsock, data_out, BUFFSIZE, 0);
