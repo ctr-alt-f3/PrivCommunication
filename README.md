@@ -12,10 +12,16 @@ gcc -o client.o client.c
 Supports only linux.
 
 **Setting up:**
+
 *FOR CLIENT:*
+
 set PASSWORD const as your password (must be long and complicated)
+
 set PORT as port you use
+
 set SERVER_IP
+
 set BUFFSIZE (the amount of data that you can sent in 1 time)
+
 *FOR SERVER*
 the same things without SERVER_IP but with ACCEPTED_IPS
