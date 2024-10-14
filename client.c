@@ -8,12 +8,39 @@
 #include <string.h>
 #include <sys/socket.h>
 #include <unistd.h>
+//**included libraries**
+#define USER_SETUP 0
+#if USER_SETUP == 0
 #define PORT 2147
 #define BUFFSIZE 600
 #define SERVER_IP "localhost"
 #define PASSWD "password"
+#endif
 void encrypt(char *string, char *password);
 int main() {
+
+  if (USER_SETUP == 1) {
+
+    char SERVER_IP[20];
+    unsigned int PORT;
+    printf("choose port\n");
+    scanf("%d", &PORT);
+
+    unsigned int BUFFSIZE;
+    printf("choose buffsize\n");
+    scanf("%d", &BUFFSIZE);
+
+    unsigned short pass_len;
+    printf("choose password len\n");
+    scanf("%d", &pass_len);
+    char PASSWD[pass_len];
+    printf("type your password");
+    scanf("%s", &PASSWD);
+
+    printf("type SERVER_IP\n");
+    scanf("%s", &SERVER_IP);
+  }
+  // quick setup;
   int socketfp = socket(AF_INET, SOCK_STREAM, 0);
   if (socketfp == -1) {
     perror("socket initialisation failed\n");
@@ -84,6 +111,7 @@ loop:
   goto loop;
   // ending program
 end:
+  shutdown(socketfp, SHUT_RDWR);
   close(socketfp);
   free(data_in);
   free(data_out);
