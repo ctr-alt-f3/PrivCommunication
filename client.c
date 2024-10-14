@@ -17,12 +17,14 @@ int main() {
   int socketfp = socket(AF_INET, SOCK_STREAM, 0);
   if (socketfp == -1) {
     perror("socket initialisation failed\n");
+    return -1;
   };
   // socket initialisation
   struct hostent *server = gethostbyname(SERVER_IP);
   struct sockaddr_in *addr_struct = malloc(sizeof(struct sockaddr_in));
   if (addr_struct == NULL) {
     perror("malloc failed\n");
+    return -1;
   }
   addr_struct->sin_family = AF_INET;
   addr_struct->sin_port = htons(
@@ -41,21 +43,21 @@ int main() {
   data_out = malloc(BUFFSIZE);
   if (data_out == NULL) {
     perror("malloc failed\n");
+    return -1;
   }
   char *data_in = malloc(BUFFSIZE);
   if (data_in == NULL) {
     perror("malloc failed\n");
+    return -1;
   }
-  recv(socketfp, data_in, BUFFSIZE, 0);
-  encrypt(data_in, PASSWD);
-  printf("%s", (char *)data_in);
-  // int id = fork();
+  /*  recv(socketfp, data_in, BUFFSIZE, 0);
+    encrypt(data_in, PASSWD);
+    printf("%s", (char *)data_in);)*/
   int action = 3;
   printf("0-send 1-read 2-exit\n");
 loop:
   scanf("%d", &action);
 
-  // if (id == 0) //{
   //  sending data
   switch (action) {
   case 0:
@@ -64,11 +66,8 @@ loop:
     if (write(socketfp, data_out, BUFFSIZE) == -1) {
       perror("writing failed");
     }
-    // printf("data in:\n %s\n", (char *)data_in);
     break;
   case 1:
-    //}
-    // if (id != 0) {
     // getting data from server
     if (read(socketfp, data_in, BUFFSIZE) == -1) {
       perror("reading failed\n");

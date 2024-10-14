@@ -52,15 +52,17 @@ int main() {
   data_out = malloc(BUFFSIZE);
   if (data_out == NULL) {
     perror("malloc failed\n");
+    return -1;
   }
   char *data_in;
   data_in = malloc(BUFFSIZE);
   if (data_in == NULL) {
     perror("malloc failed\n");
+    return -1;
   }
-  strcpy(data_out, "IGOOOOOOOOOOOOOR_BRYYYYYYYYYYYS\n\0");
-  encrypt(data_out, PASSWD);
-  send(connectedsock, data_out, BUFFSIZE, 0);
+  /*  strcpy(data_out, "IGOOOOOOOOOOOOOR_BRYYYYYYYYYYYS\n\0");
+    encrypt(data_out, PASSWD);
+    send(connectedsock, data_out, BUFFSIZE, 0);*/
   // sending messages
   int action = 3;
 loop:
