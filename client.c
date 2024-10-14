@@ -21,6 +21,9 @@ int main() {
   // socket initialisation
   struct hostent *server = gethostbyname(SERVER_IP);
   struct sockaddr_in *addr_struct = malloc(sizeof(struct sockaddr_in));
+  if (addr_struct == NULL) {
+    perror("malloc failed\n");
+  }
   addr_struct->sin_family = AF_INET;
   addr_struct->sin_port = htons(
       PORT); ////////////////////////////////////////////////////////////////////////////////////////
@@ -36,11 +39,11 @@ int main() {
   }
   char *data_out;
   data_out = malloc(BUFFSIZE);
-  if (data_out == -1) {
+  if (data_out == NULL) {
     perror("malloc failed\n");
   }
   char *data_in = malloc(BUFFSIZE);
-  if (data_in == -1) {
+  if (data_in == NULL) {
     perror("malloc failed\n");
   }
   recv(socketfp, data_in, BUFFSIZE, 0);

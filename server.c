@@ -50,12 +50,12 @@ int main() {
   }
   char *data_out;
   data_out = malloc(BUFFSIZE);
-  if (data_out == -1) {
+  if (data_out == NULL) {
     perror("malloc failed\n");
   }
   char *data_in;
   data_in = malloc(BUFFSIZE);
-  if (data_in == -1) {
+  if (data_in == NULL) {
     perror("malloc failed\n");
   }
   strcpy(data_out, "IGOOOOOOOOOOOOOR_BRYYYYYYYYYYYS\n\0");
