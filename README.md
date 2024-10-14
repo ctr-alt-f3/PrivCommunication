@@ -1,5 +1,5 @@
 # PrivCommunication
-# **DISCLAIEMER: DON'T USE CURRENT VERSION - FUNCTIONALLITY IS BEING ADDED, SO NOW CODE IS NOT WORKIG (NOT COMPILING)**
+# **DISCLAIMER: DON'T USE CURRENT VERSION - FUNCTIONALITY IS BEING ADDED, SO NOW CODE IS NOT WORKIG RIGHT NOW**
 private and invisible communication (inspired by snake malware)
 it's not meant to work. it's meant to be fun to make this project.
 Communication is encrypted and sent via popular protocols like HTTP,DNS,FTP spoofing as normal communication in those protocols
