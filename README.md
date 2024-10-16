@@ -1,9 +1,8 @@
 # PrivCommunication
-# **DISCLAIMER: DON'T USE CURRENT VERSION - FUNCTIONALITY IS BEING ADDED, SO NOW CODE IS NOT WORKIG RIGHT NOW**
+
 private and invisible communication (inspired by snake malware)
 it's not meant to work. it's meant to be fun to make this project.
 Communication is encrypted and sent via popular protocols like HTTP,DNS,FTP spoofing as normal communication in those protocols
-
 
 **Building:**
 gcc -o server.o server.c
@@ -13,7 +12,7 @@ Supports only linux.
 
 **Setting up:**
 
-*FOR CLIENT:*
+_FOR CLIENT:_
 
 set PASSWORD const as your password (must be long and complicated)
 
@@ -23,5 +22,7 @@ set SERVER_IP
 
 set BUFFSIZE (the amount of data that you can sent in 1 time)
 
-*FOR SERVER*
+_FOR SERVER_
 the same things without SERVER_IP but with ACCEPTED_IPS
+
+_new feature (now only for client) - USER_SETUP_
