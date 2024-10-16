@@ -24,26 +24,26 @@
 #endif
 void encrypt(char *string, char *password);
 int main() {
+  char *server_ip[20];
+  unsigned short pass_len;
+  unsigned int buffsize;
+  unsigned int port;
+  char *passwd[30];
   if (USER_SETUP == 1) {
 
-    char server_ip[20];
-    unsigned int port;
     printf("choose port\n");
     scanf("%d", &port);
 
-    unsigned int buffsize;
     printf("choose buffsize\n");
     scanf("%d", &buffsize);
 
-    unsigned short pass_len;
     printf("choose password len\n");
     scanf("%d", &pass_len);
-    char passwd[pass_len];
     printf("type your password");
     scanf("%s", &passwd);
 
     printf("type SERVER_IP\n");
-    scanf("%s", &server_ip);
+    scanf("%s", *server_ip);
   }
   // quick setup;
   int socketfp = socket(AF_INET, SOCK_STREAM, 0);
@@ -52,10 +52,11 @@ int main() {
     return -1;
   };
   // socket initialisation
-  struct hostent *server = gethostbyname(((USER_SETUP > 0) ? (char *)server_ip[20] : SERVER_IP));
+  struct hostent *server =
+      gethostbyname(((USER_SETUP > 0) ? server_ip[20] : SERVER_IP));
   struct sockaddr_in *addr_struct = malloc(sizeof(struct sockaddr_in));
   if (addr_struct == NULL) {
-    perror("malloc failed\n");
+    perror("malloc1 failed\n");
     return -1;
   }
   addr_struct->sin_family = AF_INET;
@@ -73,64 +74,66 @@ int main() {
   char *data_out;
   data_out = malloc(((USER_SETUP > 0) ? buffsize : BUFFSIZE));
   if (data_out == NULL) {
-    perror("malloc failed\n");
+    perror("malloc2 failed\n");
     return -1;
   }
-  char *data_in = malloc((USER_SETUP > 0) ? buffsize : BUFFSIZE);
-  char *data_in = malloc((USER_SETUP > 0) ? buffsize : BUFFSIZE);
-  perror("malloc failed\n");
-  return -1;
-}
-/*  recv(socketfp, data_in, BUFFSIZE, 0);
-  encrypt(data_in, PASSWD);
-  printf("%s", (char *)data_in);)*/
-int action = 3;
-printf("0-send 1-read 2-exit\n");
-goto loop;
-loop:
-scanf("%d", &action);
-
-//  sending data
-switch (action) {
-case 0:
-  scanf("%s", data_out);
-  encrypt(data_out, (USER_SETUP > 0) ? passwd : PASSWD);
-  if (write(socketfp, data_out, (USER_SETUP > 0) ? passwd : PASSWD) == -1) {
-    perror("writing failed\n");
+  char *data_in;
+  data_in = malloc((USER_SETUP > 0) ? buffsize : BUFFSIZE);
+  // char *data_out = malloc((USER_SETUP > 0) ? buffsize : BUFFSIZE);
+  if (data_in == NULL) {
+    perror("malloc3 failed\n");
+    return -1;
   }
-  break;
-case 1:
-  // getting data from server
-  if (read(socketfp, data_in, (USER_SETUP > 0) ? buffsize : BUFFSIZE) == -1) {
-    perror("reading failed\n");
+  /*  recv(socketfp, data_in, BUFFSIZE, 0);
+    encrypt(data_in, PASSWD);
+    printf("%s", (char *)data_in);)*/
+  int action = 3;
+  printf("0-send 1-read 2-exit\n");
+  while (1) {
+    scanf("%d", &action);
+    //  sending data
+    switch (action) {
+    case 0:
+      scanf("%s", data_out);
+      encrypt(data_out, (USER_SETUP > 0) ? *passwd : PASSWD);
+      if (write(socketfp, data_out, ((USER_SETUP > 0) ? **passwd : *PASSWD)) ==
+          -1) {
+        perror("writing failed\n");
+      }
+      break;
+    case 1:
+      // getting data from server
+      if (read(socketfp, data_in, (USER_SETUP > 0) ? buffsize : BUFFSIZE) ==
+          -1) {
+        perror("reading failed\n");
+      }
+      encrypt(data_in, (USER_SETUP > 0) ? *passwd : PASSWD);
+      printf("%s\n", data_in);
+      break;
+    //}
+    case 2:
+      goto end;
+    default:
+      printf("unknown instruction\n");
+    }
   }
-  encrypt(data_in, (USER_SETUP > 0) ? password : PASSWORD);
-  printf("%s\n", data_in);
-  break;
-//}
-case 2:
-  goto end;
-default:
-  printf("unknown instruction\n");
-}
-goto loop;
 // ending program
 end:
-shutdown(socketfp, SHUT_RDWR);
-close(socketfp);
-free(data_in);
-free(data_out);
-free(addr_struct);
-/*
-  TODO:
-  -basic i/o via network without encryption - done
-  -adding encryption
-  -spoofing as http requests
-  -adding other methods
-  -making method used random
-  -finishing
-  -add peers
-*/
+  shutdown(socketfp, SHUT_RDWR);
+  close(socketfp);
+  free(data_in);
+  free(data_out);
+  free(addr_struct);
+  /*
+    TODO:
+    -basic i/o via network without encryption - done
+    -adding encryption
+    -spoofing as http requests
+    -adding other methods
+    -making method used random
+    -finishing
+    -add peers
+  */
 }
 void encrypt(char *string, char *password) {
   int i = 0;
