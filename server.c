@@ -7,11 +7,20 @@
 #include <string.h>
 #include <sys/socket.h>
 #include <unistd.h>
+
+#if USER_SETUP == 0
+#define USER_SETUP = 0
 #define PORT 2147
 #define BUFFSIZE 600
 #define ACCEPTED_IPS INADDR_ANY
 #define PASSWD "password"
-
+#define USER_SETUP = 0
+#else
+#undef PORT
+#undef BUFFSIZE
+#undef SERVER_IP
+#undef PASSWD
+#endif
 void encrypt(char *string, char *key) {
   int i = 0;
   int j = 0;
