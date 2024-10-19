@@ -30,6 +30,10 @@ void encrypt(char *string, char *key) {
   }
 }
 int main() {
+  unsigned int port;
+  unsigned int buffsize;
+  unsigned short pass_len;
+  char *passwd[30];
   int socketfp = socket(AF_INET, SOCK_STREAM, 0);
   if (socketfp == -1) {
     perror("socket initialisation failed\n");
@@ -38,11 +42,11 @@ int main() {
   // initialised socket
   struct sockaddr_in socket_address_in;
   socket_address_in.sin_addr.s_addr = ACCEPTED_IPS;
-  socket_address_in.sin_port = htons(PORT);
+  socket_address_in.sin_port = htons(((USER_SETUP > 0) ? port : PORT));
   socket_address_in.sin_family = AF_INET;
   socklen_t len = sizeof(socket_address_in);
   if (bind(socketfp, (struct sockaddr *)&socket_address_in, len) == -1) {
-    printf("binding to port %d failed\n", PORT);
+    printf("binding to port %d failed\n", ((USER_SETUP > 0) ? port : PORT));
     return -1;
     // binded socket
   }
@@ -58,13 +62,13 @@ int main() {
     printf("connected successfully\n");
   }
   char *data_out;
-  data_out = malloc(BUFFSIZE);
+  data_out = malloc((USER_SETUP > 0) ? buffsize : BUFFSIZE);
   if (data_out == NULL) {
     perror("malloc failed\n");
     return -1;
   }
   char *data_in;
-  data_in = malloc(BUFFSIZE);
+  data_in = malloc((USER_SETUP > 0) ? BUFFSIZE : BUFFSIZE));
   if (data_in == NULL) {
     perror("malloc failed\n");
     return -1;
@@ -80,13 +84,13 @@ loop:
   switch (action) {
   case 0:
     scanf("%s", data_out);
-    encrypt(data_out, PASSWD);
-    write(connectedsock, data_out, BUFFSIZE);
+    encrypt(data_out, (USER_SETUP > 0) ? passwd : PASSWD));
+    write(connectedsock, data_out, (USER_SETUP > 0) ? buffsize : BUFFSIZE));
     break;
   // getting messages
   case 1:
-    read(connectedsock, data_in, BUFFSIZE);
-    encrypt(data_in, PASSWD);
+    read(connectedsock, data_in, (USER_SETUP > 0) ? buffsize : BUFFSIZE));
+    encrypt(data_in, ((USER_SETUP > 0) ? passwd : PASSWD));
     printf("%s\n", data_in);
     break;
   case 2:
