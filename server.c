@@ -8,13 +8,12 @@
 #include <sys/socket.h>
 #include <unistd.h>
 
+#define USER_SETUP 0
 #if USER_SETUP == 0
-#define USER_SETUP = 0
 #define PORT 2147
 #define BUFFSIZE 600
 #define ACCEPTED_IPS INADDR_ANY
 #define PASSWD "password"
-#define USER_SETUP = 0
 #else
 #undef PORT
 #undef BUFFSIZE
@@ -68,7 +67,7 @@ int main() {
     return -1;
   }
   char *data_in;
-  data_in = malloc((USER_SETUP > 0) ? BUFFSIZE : BUFFSIZE));
+  data_in = malloc((USER_SETUP > 0) ? BUFFSIZE : BUFFSIZE);
   if (data_in == NULL) {
     perror("malloc failed\n");
     return -1;
