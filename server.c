@@ -77,26 +77,27 @@ int main() {
     send(connectedsock, data_out, BUFFSIZE, 0);*/
   // sending messages
   int action = 3;
-loop:
-  printf("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n0-send 1-read "
-         "2-exit\n-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-");
-  scanf("%d", &action);
-  switch (action) {
-  case 0:
-    scanf("%s", data_out);
-    encrypt(data_out, ((USER_SETUP > 0) ? *passwd : PASSWD));
-    write(connectedsock, data_out, ((USER_SETUP > 0) ? buffsize : BUFFSIZE));
-    break;
-  // getting messages
-  case 1:
-    read(connectedsock, data_in, ((USER_SETUP > 0) ? buffsize : BUFFSIZE));
-    encrypt(data_in, ((USER_SETUP > 0) ? *passwd : PASSWD));
-    printf("%s\n", data_in);
-    break;
-  case 2:
-    goto end;
+  while (1) {
+    printf("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n0-send 1-read "
+           "2-exit\n-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n");
+    scanf("%d", &action);
+    switch (action) {
+    case 0:
+      printf("data out:\n");
+      scanf("%[^\n]s", data_out);
+      encrypt(data_out, ((USER_SETUP > 0) ? *passwd : PASSWD));
+      write(connectedsock, data_out, ((USER_SETUP > 0) ? buffsize : BUFFSIZE));
+      break;
+    // getting messages
+    case 1:
+      read(connectedsock, data_in, ((USER_SETUP > 0) ? buffsize : BUFFSIZE));
+      encrypt(data_in, ((USER_SETUP > 0) ? *passwd : PASSWD));
+      printf("%s\n", data_in);
+      break;
+    case 2:
+      goto end;
+    }
   }
-  goto loop;
 end:
   free(data_out);
   free(data_in);

@@ -91,14 +91,15 @@ int main() {
   while (1) {
 
     printf("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n0-send 1-read "
-           "2-exit\n-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-");
+           "2-exit\n-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n");
     scanf("%d", &action);
     //  sending data
     switch (action) {
     case 0:
-      scanf("%s", data_out);
+      printf("data out:\n");
+      scanf("%[^\n]s", data_out);
       encrypt(data_out, (USER_SETUP > 0) ? *passwd : PASSWD);
-      if (write(socketfp, data_out, ((USER_SETUP > 0) ? **passwd : *PASSWD)) ==
+      if (write(socketfp, data_out, ((USER_SETUP > 0) ? buffsize : BUFFSIZE)) ==
           -1) {
         perror("writing failed\n");
       }
