@@ -83,13 +83,13 @@ loop:
   switch (action) {
   case 0:
     scanf("%s", data_out);
-    encrypt(data_out, (USER_SETUP > 0) ? passwd : PASSWD));
-    write(connectedsock, data_out, (USER_SETUP > 0) ? buffsize : BUFFSIZE));
+    encrypt(data_out, ((USER_SETUP > 0) ? *passwd : PASSWD));
+    write(connectedsock, data_out, ((USER_SETUP > 0) ? buffsize : BUFFSIZE));
     break;
   // getting messages
   case 1:
-    read(connectedsock, data_in, (USER_SETUP > 0) ? buffsize : BUFFSIZE));
-    encrypt(data_in, ((USER_SETUP > 0) ? passwd : PASSWD));
+    read(connectedsock, data_in, ((USER_SETUP > 0) ? buffsize : BUFFSIZE));
+    encrypt(data_in, ((USER_SETUP > 0) ? *passwd : PASSWD));
     printf("%s\n", data_in);
     break;
   case 2:
