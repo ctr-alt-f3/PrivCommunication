@@ -78,7 +78,8 @@ int main() {
   // sending messages
   int action = 3;
 loop:
-  printf("0-send 1-read 2-exit\n");
+  printf("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n0-send 1-read "
+         "2-exit\n-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-");
   scanf("%d", &action);
   switch (action) {
   case 0:
