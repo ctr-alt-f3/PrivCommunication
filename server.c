@@ -20,19 +20,15 @@
 #undef SERVER_IP
 #undef PASSWD
 #endif
-void encrypt(char *string, char *key) {
-  int i = 0;
-  int j = 0;
-  for (i = 0; string[i] != '\0'; i++) {
-    string[i] = string[i] ^ key[j];
-    j = (j + 1) % strlen(key);
-  }
-}
+
+char *replace_char(char *str, char find, char replace);
+void encrypt(char *string, char *key);
+
 int main() {
   unsigned int port;
   unsigned int buffsize;
   unsigned short pass_len;
-  char *passwd[30];
+  char *passwd = malloc(30);
   int socketfp = socket(AF_INET, SOCK_STREAM, 0);
   if (socketfp == -1) {
     perror("socket initialisation failed\n");
@@ -81,17 +77,21 @@ int main() {
     printf("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n0-send 1-read "
            "2-exit\n-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n");
     scanf("%d", &action);
+    fflush(stdout);
+    fflush(stdin);
     switch (action) {
     case 0:
       printf("data out:\n");
       scanf("%[^\n]s", data_out);
-      encrypt(data_out, ((USER_SETUP > 0) ? *passwd : PASSWD));
+      replace_char(data_out, '\n', '\0');
+      encrypt(data_out, ((USER_SETUP > 0) ? passwd : PASSWD));
       write(connectedsock, data_out, ((USER_SETUP > 0) ? buffsize : BUFFSIZE));
       break;
     // getting messages
     case 1:
       read(connectedsock, data_in, ((USER_SETUP > 0) ? buffsize : BUFFSIZE));
-      encrypt(data_in, ((USER_SETUP > 0) ? *passwd : PASSWD));
+      encrypt(data_in, ((USER_SETUP > 0) ? passwd : PASSWD));
+
       printf("%s\n", data_in);
       break;
     case 2:
@@ -99,6 +99,7 @@ int main() {
     }
   }
 end:
+  free(passwd);
   free(data_out);
   free(data_in);
   shutdown(connectedsock, SHUT_RDWR);
@@ -108,10 +109,21 @@ end:
   /* TODO :
     -getting data (using all supported ports)
     -decrypting data
-
-
-
-
-
   */
+}
+char *replace_char(char *str, char find, char replace) {
+  char *current_pos = strchr(str, find);
+  while (current_pos) {
+    *current_pos = replace;
+    current_pos = strchr(current_pos, find);
+  }
+  return str;
+}
+void encrypt(char *string, char *key) {
+  int i = 0;
+  int j = 0;
+  for (i = 0; string[i] != '\0'; i++) {
+    string[i] = string[i] ^ key[j];
+    j = (j + 1) % strlen(key);
+  }
 }

@@ -23,12 +23,13 @@
 #undef PASSWD
 #endif
 void encrypt(char *string, char *password);
+char *replace_char(char *str, char find, char replace);
 int main() {
   char *server_ip[20];
   unsigned short pass_len;
   unsigned int buffsize;
   unsigned int port;
-  char *passwd[30];
+  char *passwd;
   if (USER_SETUP == 1) {
 
     printf("choose port\n");
@@ -40,7 +41,7 @@ int main() {
     printf("choose password len\n");
     scanf("%d", &pass_len);
     printf("type your password");
-    scanf("%s", &passwd);
+    scanf("%s", passwd);
 
     printf("type SERVER_IP\n");
     scanf("%s", *server_ip);
@@ -93,12 +94,14 @@ int main() {
     printf("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n0-send 1-read "
            "2-exit\n-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n");
     scanf("%d", &action);
+    fflush(stdin);
+    fflush(stdout);
     //  sending data
     switch (action) {
     case 0:
       printf("data out:\n");
       scanf("%[^\n]s", data_out);
-      encrypt(data_out, (USER_SETUP > 0) ? *passwd : PASSWD);
+      encrypt(data_out, (USER_SETUP > 0) ? passwd : PASSWD);
       if (write(socketfp, data_out, ((USER_SETUP > 0) ? buffsize : BUFFSIZE)) ==
           -1) {
         perror("writing failed\n");
@@ -110,7 +113,7 @@ int main() {
           -1) {
         perror("reading failed\n");
       }
-      encrypt(data_in, (USER_SETUP > 0) ? *passwd : PASSWD);
+      encrypt(data_in, (USER_SETUP > 0) ? passwd : PASSWD);
       printf("%s\n", data_in);
       break;
     //}
@@ -145,4 +148,12 @@ void encrypt(char *string, char *password) {
     string[i] = string[i] ^ password[j];
     j = (j + 1) % strlen(password);
   }
+}
+char *replace_char(char *str, char find, char replace) {
+  char *current_pos = strchr(str, find);
+  while (current_pos) {
+    *current_pos = replace;
+    current_pos = strchr(current_pos, find);
+  }
+  return str;
 }
