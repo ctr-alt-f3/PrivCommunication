@@ -88,8 +88,10 @@ int main() {
     encrypt(data_in, PASSWD);
     printf("%s", (char *)data_in);)*/
   int action = 3;
-  printf("0-send 1-read 2-exit\n");
   while (1) {
+
+    printf("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n0-send 1-read "
+           "2-exit\n-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-");
     scanf("%d", &action);
     //  sending data
     switch (action) {
