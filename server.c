@@ -68,17 +68,16 @@ int main() {
     perror("malloc failed\n");
     return -1;
   }
-  /*  strcpy(data_out, "IGOOOOOOOOOOOOOR_BRYYYYYYYYYYYS\n\0");
-    encrypt(data_out, PASSWD);
-    send(connectedsock, data_out, BUFFSIZE, 0);*/
+  /*  strcpy(data_out, "IGOOOOOOOOOOOOOR_BRYYYYYYYYYYYS\n\0"); //vulnerable for
+    attacks - deleted// encrypt(data_out, PASSWD); send(connectedsock, data_out,
+    BUFFSIZE, 0);*/
   // sending messages
   int action = 3;
   while (1) {
     printf("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n0-send 1-read "
            "2-exit\n-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n");
     scanf("%d", &action);
-    fflush(stdout);
-    fflush(stdin);
+    fflush(NULL);
     switch (action) {
     case 0:
       printf("data out:\n");
@@ -108,7 +107,7 @@ end:
   close(socketfp);
   /* TODO :
     -getting data (using all supported ports)
-    -decrypting data
+    -decrypting data - done
   */
 }
 char *replace_char(char *str, char find, char replace) {

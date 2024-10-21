@@ -94,8 +94,7 @@ int main() {
     printf("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n0-send 1-read "
            "2-exit\n-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n");
     scanf("%d", &action);
-    fflush(stdin);
-    fflush(stdout);
+    fflush(NULL);
     //  sending data
     switch (action) {
     case 0:
@@ -120,7 +119,7 @@ int main() {
     case 2:
       goto end;
     default:
-      printf("unknown instruction\n");
+      printf("unknown instruction entered\n");
     }
   }
 // ending program
@@ -133,9 +132,8 @@ end:
   /*
     TODO:
     -basic i/o via network without encryption - done
-    -adding encryption
-    -spoofing as http requests
-    -adding other methods
+    -adding encryption - done
+    -spoofing as http requests (changed to DNS requests)
     -making method used random
     -finishing
     -add peers
