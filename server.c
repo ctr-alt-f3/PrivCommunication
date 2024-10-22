@@ -76,7 +76,7 @@ int main() {
 loop:
   printf("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n0-send 1-read "
          "2-exit\n-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n");
-  scanf("%d", action);
+  scanf("%d", action); // sth is wrong here...
   //    fflush(NULL);
   switch (*action) {
   case 0:

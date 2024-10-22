@@ -98,7 +98,7 @@ int main() {
     //  sending data
     switch (action) {
     case 0:
-      printf("data out:\n");
+      printf("data out:\n");            // what is wrong here?
       fgets(data_out, BUFFSIZE, stdin); // why is it ignored??
       replace_char(data_out, '\n', '\0');
       encrypt(data_out, (USER_SETUP > 0) ? passwd : PASSWD);
