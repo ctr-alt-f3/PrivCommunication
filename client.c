@@ -11,7 +11,7 @@
 //**included libraries**
 #define USER_SETUP 0
 #if USER_SETUP == 0
-#define PORT 2147
+#define PORT 21474
 #define BUFFSIZE 600
 #define SERVER_IP "localhost"
 #define PASSWD "password"
@@ -88,18 +88,19 @@ int main() {
   /*  recv(socketfp, data_in, BUFFSIZE, 0);
     encrypt(data_in, PASSWD);
     printf("%s", (char *)data_in);)*/
-  int action = 3;
+  int action = 2;
   while (1) {
 
     printf("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n0-send 1-read "
            "2-exit\n-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n");
     scanf("%d", &action);
-    fflush(NULL);
+    //    fflush(NULL);
     //  sending data
     switch (action) {
     case 0:
       printf("data out:\n");
-      scanf("%[^\n]s", data_out);
+      fgets(data_out, BUFFSIZE, stdin);
+      replace_char(data_out, '\n', '\0');
       encrypt(data_out, (USER_SETUP > 0) ? passwd : PASSWD);
       if (write(socketfp, data_out, ((USER_SETUP > 0) ? buffsize : BUFFSIZE)) ==
           -1) {

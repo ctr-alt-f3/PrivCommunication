@@ -10,7 +10,7 @@
 
 #define USER_SETUP 0
 #if USER_SETUP == 0
-#define PORT 2147
+#define PORT 21474
 #define BUFFSIZE 600
 #define ACCEPTED_IPS INADDR_ANY
 #define PASSWD "password"
@@ -72,31 +72,31 @@ int main() {
     attacks - deleted// encrypt(data_out, PASSWD); send(connectedsock, data_out,
     BUFFSIZE, 0);*/
   // sending messages
-  int action = 3;
-  while (1) {
-    printf("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n0-send 1-read "
-           "2-exit\n-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n");
-    scanf("%d", &action);
-    fflush(NULL);
-    switch (action) {
-    case 0:
-      printf("data out:\n");
-      scanf("%[^\n]s", data_out);
-      replace_char(data_out, '\n', '\0');
-      encrypt(data_out, ((USER_SETUP > 0) ? passwd : PASSWD));
-      write(connectedsock, data_out, ((USER_SETUP > 0) ? buffsize : BUFFSIZE));
-      break;
-    // getting messages
-    case 1:
-      read(connectedsock, data_in, ((USER_SETUP > 0) ? buffsize : BUFFSIZE));
-      encrypt(data_in, ((USER_SETUP > 0) ? passwd : PASSWD));
+  int *action = malloc(4);
+loop:
+  printf("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n0-send 1-read "
+         "2-exit\n-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n");
+  scanf("%d", action);
+  //    fflush(NULL);
+  switch (*action) {
+  case 0:
+    printf("data out:\n");
+    fgets(data_out, BUFFSIZE, stdin);
+    replace_char(data_out, '\n', '\0');
+    encrypt(data_out, ((USER_SETUP > 0) ? passwd : PASSWD));
+    write(connectedsock, data_out, ((USER_SETUP > 0) ? buffsize : BUFFSIZE));
+    break;
+  // getting messages
+  case 1:
+    read(connectedsock, data_in, ((USER_SETUP > 0) ? buffsize : BUFFSIZE));
+    encrypt(data_in, ((USER_SETUP > 0) ? passwd : PASSWD));
 
-      printf("%s\n", data_in);
-      break;
-    case 2:
-      goto end;
-    }
+    printf("%s\n", data_in);
+    break;
+  case 2:
+    goto end;
   }
+  goto loop;
 end:
   free(passwd);
   free(data_out);
