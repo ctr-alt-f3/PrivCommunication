@@ -99,7 +99,7 @@ int main() {
     switch (action) {
     case 0:
       printf("data out:\n");
-      fgets(data_out, BUFFSIZE, stdin);
+      fgets(data_out, BUFFSIZE, stdin); // why is it ignored??
       replace_char(data_out, '\n', '\0');
       encrypt(data_out, (USER_SETUP > 0) ? passwd : PASSWD);
       if (write(socketfp, data_out, ((USER_SETUP > 0) ? buffsize : BUFFSIZE)) ==
