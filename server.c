@@ -68,21 +68,23 @@ int main() {
     perror("malloc failed\n");
     return -1;
   }
-  /*  strcpy(data_out, "IGOOOOOOOOOOOOOR_BRYYYYYYYYYYYS\n\0"); //vulnerable for
-    attacks - deleted// encrypt(data_out, PASSWD); send(connectedsock, data_out,
-    BUFFSIZE, 0);*/
   // sending messages
   int *action = malloc(4);
 loop:
   printf("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n0-send 1-read "
          "2-exit\n-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n");
-  scanf("%d", action); // sth is wrong here...
-  //    fflush(NULL);
+  scanf("%d", action); // sth is wrong here... (not, fixed)
   switch (*action) {
   case 0:
     printf("data out:\n");
-    fgets(data_out, BUFFSIZE, stdin); // why is it ignored??
-    fgets(data_out, BUFFSIZE, stdin); // why?
+    fgets(data_out, BUFFSIZE, stdin);
+    fgets(data_out, BUFFSIZE, stdin); // why second one works?
+    /* you might say that there is one fgets function too much, and you would
+     * be correct but i don't know why the first fgets is ignored, so there are
+     * two, and only one will be executed if you know why - pull requests are
+     * open
+     *
+     * */
 
     //    replace_char(data_out, '\n', '\0');
     encrypt(data_out, ((USER_SETUP > 0) ? passwd : PASSWD));

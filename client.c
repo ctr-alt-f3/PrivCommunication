@@ -94,13 +94,16 @@ int main() {
     printf("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n0-send 1-read "
            "2-exit\n-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n");
     scanf("%d", &action);
-    //    fflush(NULL);
     //  sending data
     switch (action) {
     case 0:
-      printf("data out:\n");            // what is wrong here?
-      fgets(data_out, BUFFSIZE, stdin); // why is it ignored??
-      fgets(data_out, BUFFSIZE, stdin); // WHYYYY
+      printf("data out:\n");
+      fgets(data_out, BUFFSIZE, stdin);
+      fgets(data_out, BUFFSIZE, stdin);
+      /*you might say that there is one fgets function too much, and you would
+       *be correct but i don't know why the first fgets is ignored, so there are
+       *two, and only one will be executed
+       */
       //      replace_char(data_out, '\n', '\0');
       encrypt(data_out, (USER_SETUP > 0) ? passwd : PASSWD);
       if (write(socketfp, data_out, ((USER_SETUP > 0) ? buffsize : BUFFSIZE)) ==
