@@ -23,7 +23,7 @@
 #undef PASSWD
 #endif
 void encrypt(char *string, char *password);
-char *replace_char(char *str, char find, char replace);
+// char *replace_char(char *str, char find, char replace);
 int main() {
   char *server_ip[20];
   unsigned short pass_len;
@@ -152,11 +152,11 @@ void encrypt(char *string, char *password) {
     j = (j + 1) % strlen(password);
   }
 }
-char *replace_char(char *str, char find, char replace) {
+/*char *replace_char(char *str, char find, char replace) {
   char *current_pos = strchr(str, find);
   while (current_pos) {
     *current_pos = replace;
     current_pos = strchr(current_pos, find);
   }
   return str;
-}
+}*/

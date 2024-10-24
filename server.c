@@ -21,7 +21,7 @@
 #undef PASSWD
 #endif
 
-char *replace_char(char *str, char find, char replace);
+// char *replace_char(char *str, char find, char replace);
 void encrypt(char *string, char *key);
 
 int main() {
@@ -114,14 +114,14 @@ end:
     -decrypting data - done
   */
 }
-char *replace_char(char *str, char find, char replace) {
+/*char *replace_char(char *str, char find, char replace) {
   char *current_pos = strchr(str, find);
   while (current_pos) {
     *current_pos = replace;
     current_pos = strchr(current_pos, find);
   }
   return str;
-}
+}*/
 void encrypt(char *string, char *key) {
   int i = 0;
   int j = 0;
